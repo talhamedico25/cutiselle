@@ -37,22 +37,22 @@ SKIN_TYPES = {
 
 PRODUCT_CATALOG = {
     'cleansers': [
-        {'name': 'Derma-Pure Gentle Cleanser', 'type': 'gentle', 'ingredients': ['ceramides', 'hyaluronic acid'], 'price': 24.99},
-        {'name': 'Clarifying Foam Cleanser', 'type': 'oily', 'ingredients': ['salicylic acid', 'tea tree'], 'price': 28.99},
-        {'name': 'Hydrating Cream Cleanser', 'type': 'dry', 'ingredients': ['glycerin', 'squalane'], 'price': 26.99},
-        {'name': 'Sensitive Skin Cleanser', 'type': 'sensitive', 'ingredients': ['oat extract', 'allantoin'], 'price': 29.99}
+        {'name': 'Derma-Pure Gentle Cleanser', 'type': 'gentle', 'ingredients': ['ceramides', 'hyaluronic acid'], 'price': 24.99, 'stock':0},
+        {'name': 'Clarifying Foam Cleanser', 'type': 'oily', 'ingredients': ['salicylic acid', 'tea tree'], 'price': 28.99, 'stock':0},
+        {'name': 'Hydrating Cream Cleanser', 'type': 'dry', 'ingredients': ['glycerin', 'squalane'], 'price': 26.99, 'stock':0},
+        {'name': 'Sensitive Skin Cleanser', 'type': 'sensitive', 'ingredients': ['oat extract', 'allantoin'], 'price': 29.99, 'stock':0}
     ],
     'moisturizers': [
-        {'name': 'Barrier Repair Moisturizer', 'type': 'dry', 'ingredients': ['ceramides', 'niacinamide'], 'price': 34.99},
-        {'name': 'Oil-Free Hydrating Gel', 'type': 'oily', 'ingredients': ['hyaluronic acid', 'zinc'], 'price': 32.99},
-        {'name': 'Daily Balance Moisturizer', 'type': 'normal', 'ingredients': ['peptides', 'vitamin E'], 'price': 30.99},
-        {'name': 'Ultra-Gentle Moisturizer', 'type': 'sensitive', 'ingredients': ['colloidal oatmeal', 'shea butter'], 'price': 36.99}
+        {'name': 'Barrier Repair Moisturizer', 'type': 'dry', 'ingredients': ['ceramides', 'niacinamide'], 'price': 34.99, 'stock':0},
+        {'name': 'Oil-Free Hydrating Gel', 'type': 'oily', 'ingredients': ['hyaluronic acid', 'zinc'], 'price': 32.99, 'stock':0},
+        {'name': 'Daily Balance Moisturizer', 'type': 'normal', 'ingredients': ['peptides', 'vitamin E'], 'price': 30.99, 'stock':0},
+        {'name': 'Ultra-Gentle Moisturizer', 'type': 'sensitive', 'ingredients': ['colloidal oatmeal', 'shea butter'], 'price': 36.99, 'stock':0}
     ],
     'serums': [
-        {'name': 'Vitamin C Brightening Serum', 'type': 'all', 'ingredients': ['L-ascorbic acid', 'vitamin E'], 'price': 45.99},
-        {'name': 'Niacinamide Pore Refining Serum', 'type': 'oily', 'ingredients': ['niacinamide', 'zinc oxide'], 'price': 38.99},
-        {'name': 'Hyaluronic Acid Plumping Serum', 'type': 'dry', 'ingredients': ['hyaluronic acid', 'peptides'], 'price': 42.99},
-        {'name': 'Retinol Renewal Serum', 'type': 'normal', 'ingredients': ['retinol', 'squalane'], 'price': 48.99}
+        {'name': 'Vitamin C Brightening Serum', 'type': 'all', 'ingredients': ['L-ascorbic acid', 'vitamin E'], 'price': 45.99, 'stock':0},
+        {'name': 'Niacinamide Pore Refining Serum', 'type': 'oily', 'ingredients': ['niacinamide', 'zinc oxide'], 'price': 38.99, 'stock': 0},
+        {'name': 'Hyaluronic Acid Plumping Serum', 'type': 'dry', 'ingredients': ['hyaluronic acid', 'peptides'], 'price': 42.99, 'stock':0},
+        {'name': 'Retinol Renewal Serum', 'type': 'normal', 'ingredients': ['retinol', 'squalane'], 'price': 48.99, 'stock':0}
     ]
 }
 
