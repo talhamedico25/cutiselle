@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+
+{% block title %}Products - DermaAI{% endblock %}
+
+{% block content %}
+<section class="products-hero">
+    <div class="container">
+        <h1>Our Product Collection</h1>
+        <p>Scientifically formulated skincare products designed for your unique skin needs</p>
+    </div>
+</section>
+
+<section class="products-filter">
+    <div class="container">
+        <div class="filter-controls">
+            <button class="filter-btn active" data-category="all">All Products</button>
+            <button class="filter-btn" data-category="cleansers">Cleansers</button>
+            <button class="filter-btn" data-category="moisturizers">Moisturizers</button>
+            <button class="filter-btn" data-category="serums">Serums</button>
+        </div>
+        
+        <div class="sort-controls">
+            <label for="sortBy">Sort by:</label>
+            <select id="sortBy">
+                <option value="name">Name</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="type">Skin Type</option>
+            </select>
+        </div>
+    </div>
+</section>
+
+<section class="products-grid">
+    <div class="container">
+        <div class="products-container">
+            {% for category, products in products.items() %}
+            <div class="category-section" data-category="{{ category }}">
+                <h2 class="category-title">{{ category.title() }}</h2>
+                <div class="products-row">
+                    {% for product in products %}
+                    <div class="product-card" data-category="{{ category }}" data-price="{{ product.price }}" data-type="{{ product.type }}">
+                        <div class="product-image">
+                            <div class="product-icon">
+                                {% if category == 'cleansers' %}
+                                <i class="fas fa-soap"></i>
+                                {% elif category == 'moisturizers' %}
+                                <i class="fas fa-tint"></i>
+                                {% elif category == 'serums' %}
+                                <i class="fas fa-eye-dropper"></i>
+                                {% endif %}
+                            </div>
+                            <div class="product-badge">
+                                {% if product.type == 'all' %}
+                                All Skin Types
+                                {% else %}
+                                {{ product.type.title() }} Skin
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="product-info">
+                            <h3 class="product-name">{{ product.name }}</h3>
+                                                         <p class="product-price">${{ product.price }}</p>
+                            
+                            <div class="product-ingredients">
+                                <h4>Key Ingredients:</h4>
+                                <ul>
+                                    {% for ingredient in product.ingredients %}
+                                    <li>{{ ingredient.title() }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            
+                            <div class="product-benefits">
+                                <h4>Benefits:</h4>
+                                <ul>
+                                    {% if category == 'cleansers' %}
+                                    <li>Gentle yet effective cleansing</li>
+                                    <li>Maintains skin barrier</li>
+                                    <li>Removes impurities</li>
+                                    {% elif category == 'moisturizers' %}
+                                    <li>Deep hydration</li>
+                                    <li>Strengthens skin barrier</li>
+                                    <li>Reduces water loss</li>
+                                    {% elif category == 'serums' %}
+                                    <li>Targeted treatment</li>
+                                    <li>High concentration actives</li>
+                                    <li>Fast absorption</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            
+                            <div class="product-actions">
+                                <button class="btn btn-primary btn-small" onclick="addToCart('{{ product.name }}', {{ product.price }})">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Add to Cart
+                                </button>
+                                <button class="btn btn-secondary btn-small" onclick="showProductDetails('{{ product.name }}')">
+                                    <i class="fas fa-info-circle"></i>
+                                    Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="product-info-section">
+    <div class="container">
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h3>Clinically Tested</h3>
+                <p>All our products undergo rigorous dermatological testing to ensure safety and efficacy.</p>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3>Clean Formulations</h3>
+                <p>Free from harmful chemicals, parabens, and unnecessary additives. Only proven ingredients.</p>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <h3>Dermatologist Approved</h3>
+                <p>Developed and approved by certified dermatologists with years of clinical experience.</p>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <h3>Fast Shipping</h3>
+                <p>Free shipping on orders over $50. Get your products delivered within 2-3 business days.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Product Details Modal -->
+<div class="modal" id="productModal" style="display: none;">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<!-- Shopping Cart Sidebar -->
+<div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+        <h3>Shopping Cart</h3>
+        <button class="close-cart" onclick="toggleCart()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-total">
+        <div class="total-amount">Total: $<span id="totalAmount">0.00</span></div>
+        <button class="btn btn-primary btn-large" onclick="checkout()">
+            <i class="fas fa-credit-card"></i>
+            Checkout
+        </button>
+    </div>
+</div>
+
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+<!-- Floating Cart Button -->
+<button class="floating-cart" onclick="toggleCart()">
+    <i class="fas fa-shopping-cart"></i>
+    <span class="cart-count" id="cartCount">0</span>
+</button>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let cart = [];
+let cartTotal = 0;
+
+// Filter and sort functionality
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const category = this.dataset.category;
+        filterProducts(category);
+        
+        // Update active button
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
+
+document.getElementById('sortBy').addEventListener('change', function() {
+    sortProducts(this.value);
+});
+
+function filterProducts(category) {
+    const products = document.querySelectorAll('.product-card');
+    const categories = document.querySelectorAll('.category-section');
+    
+    if (category === 'all') {
+        categories.forEach(cat => cat.style.display = 'block');
+        products.forEach(product => product.style.display = 'block');
+    } else {
+        categories.forEach(cat => {
+            if (cat.dataset.category === category) {
+                cat.style.display = 'block';
+            } else {
+                cat.style.display = 'none';
+            }
+        });
+    }
+}
+
+function sortProducts(sortBy) {
+    const containers = document.querySelectorAll('.products-row');
+    
+    containers.forEach(container => {
+        const products = Array.from(container.querySelectorAll('.product-card'));
+        
+        products.sort((a, b) => {
+            switch(sortBy) {
+                case 'name':
+                    return a.querySelector('.product-name').textContent.localeCompare(b.querySelector('.product-name').textContent);
+                case 'price-low':
+                    return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                case 'price-high':
+                    return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                case 'type':
+                    return a.dataset.type.localeCompare(b.dataset.type);
+                default:
+                    return 0;
+            }
+        });
+        
+        // Re-append sorted products
+        products.forEach(product => container.appendChild(product));
+    });
+}
+
+function addToCart(productName, price) {
+    const existingItem = cart.find(item => item.name === productName);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            name: productName,
+            price: price,
+            quantity: 1
+        });
+    }
+    
+    updateCartDisplay();
+    showCartNotification(productName);
+}
+
+function updateCartDisplay() {
+    const cartItems = document.getElementById('cartItems');
+    const cartCount = document.getElementById('cartCount');
+    const totalAmount = document.getElementById('totalAmount');
+    
+    cartItems.innerHTML = '';
+    cartTotal = 0;
+    let itemCount = 0;
+    
+    cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        cartTotal += itemTotal;
+        itemCount += item.quantity;
+        
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        cartItem.innerHTML = `
+            <div class="cart-item-info">
+                <h4>${item.name}</h4>
+                <p>$${item.price.toFixed(2)} x ${item.quantity}</p>
+            </div>
+            <div class="cart-item-actions">
+                <button onclick="changeQuantity(${index}, -1)" class="quantity-btn">-</button>
+                <span class="quantity">${item.quantity}</span>
+                <button onclick="changeQuantity(${index}, 1)" class="quantity-btn">+</button>
+                <button onclick="removeFromCart(${index})" class="remove-btn">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `;
+        cartItems.appendChild(cartItem);
+    });
+    
+    cartCount.textContent = itemCount;
+    totalAmount.textContent = cartTotal.toFixed(2);
+}
+
+function changeQuantity(index, change) {
+    cart[index].quantity += change;
+    if (cart[index].quantity <= 0) {
+        cart.splice(index, 1);
+    }
+    updateCartDisplay();
+}
+
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCartDisplay();
+}
+
+function toggleCart() {
+    const sidebar = document.getElementById('cartSidebar');
+    const overlay = document.getElementById('cartOverlay');
+    
+    if (sidebar.classList.contains('active')) {
+        sidebar.classList.remove('active');
+        overlay.style.display = 'none';
+    } else {
+        sidebar.classList.add('active');
+        overlay.style.display = 'block';
+    }
+}
+
+function showCartNotification(productName) {
+    // Create and show a temporary notification
+    const notification = document.createElement('div');
+    notification.className = 'cart-notification';
+    notification.textContent = `Added ${productName} to cart!`;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+function showProductDetails(productName) {
+    // This would typically fetch detailed product information
+    const modal = document.getElementById('productModal');
+    const modalContent = document.getElementById('modalContent');
+    
+    modalContent.innerHTML = `
+        <h2>${productName}</h2>
+        <p>Detailed product information would be displayed here, including:</p>
+        <ul>
+            <li>Complete ingredient list</li>
+            <li>Usage instructions</li>
+            <li>Clinical study results</li>
+            <li>Customer reviews</li>
+            <li>Dermatologist recommendations</li>
+        </ul>
+    `;
+    
+    modal.style.display = 'block';
+}
+
+function checkout() {
+    if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+    }
+    
+    // This would typically redirect to a checkout page
+    alert(`Proceeding to checkout with ${cart.length} items. Total: $${cartTotal.toFixed(2)}`);
+}
+
+// Modal close functionality
+document.querySelector('.close').addEventListener('click', function() {
+    document.getElementById('productModal').style.display = 'none';
+});
+
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('productModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+</script>
+{% endblock %}
