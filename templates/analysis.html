@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+
+{% block title %}Skin Analysis - DermaAI{% endblock %}
+
+{% block content %}
+<section class="analysis-hero">
+    <div class="container">
+        <h1>AI-Powered Skin Analysis</h1>
+        <p>Get personalized skincare recommendations based on your unique skin profile</p>
+    </div>
+</section>
+
+<section class="analysis-form">
+    <div class="container">
+        <div class="analysis-container">
+            <div class="form-section">
+                <h2>Tell us about your skin</h2>
+                <form id="skinAnalysisForm">
+                    <div class="form-group">
+                        <label for="age">Age Range</label>
+                        <select id="age" name="age" required>
+                            <option value="">Select your age range</option>
+                            <option value="18-25">18-25</option>
+                            <option value="26-35">26-35</option>
+                            <option value="36-45">36-45</option>
+                            <option value="46-55">46-55</option>
+                            <option value="55+">55+</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="skin_feel">How does your skin usually feel?</label>
+                        <select id="skin_feel" name="skin_feel" required>
+                            <option value="">Select how your skin feels</option>
+                            <option value="balanced">Balanced and comfortable</option>
+                            <option value="dry">Dry and tight</option>
+                            <option value="oily">Oily and shiny</option>
+                            <option value="combination">Combination (oily T-zone, dry cheeks)</option>
+                            <option value="sensitive">Sensitive and reactive</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What are your main skin concerns? (Select all that apply)</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="concerns" value="acne">
+                                <span class="checkmark"></span>
+                                Acne and breakouts
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="concerns" value="aging">
+                                <span class="checkmark"></span>
+                                Fine lines and wrinkles
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="concerns" value="hyperpigmentation">
+                                <span class="checkmark"></span>
+                                Dark spots and hyperpigmentation
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="concerns" value="dryness">
+                                <span class="checkmark"></span>
+                                Dryness and dehydration
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="concerns" value="sensitivity">
+                                <span class="checkmark"></span>
+                                Sensitivity and irritation
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="concerns" value="pores">
+                                <span class="checkmark"></span>
+                                Large pores
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="concerns" value="redness">
+                                <span class="checkmark"></span>
+                                Redness and inflammation
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="breakouts">How often do you experience breakouts?</label>
+                        <select id="breakouts" name="breakouts" required>
+                            <option value="">Select frequency</option>
+                            <option value="never">Never</option>
+                            <option value="rarely">Rarely (once every few months)</option>
+                            <option value="sometimes">Sometimes (monthly)</option>
+                            <option value="often">Often (weekly)</option>
+                            <option value="always">Always (daily)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sensitivity">How sensitive is your skin?</label>
+                        <select id="sensitivity" name="sensitivity" required>
+                            <option value="">Select sensitivity level</option>
+                            <option value="low">Low - rarely reacts to products</option>
+                            <option value="medium">Medium - occasionally reacts</option>
+                            <option value="high">High - often reacts to products</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="current_routine">Current skincare routine</label>
+                        <select id="current_routine" name="current_routine" required>
+                            <option value="">Select your current routine</option>
+                            <option value="minimal">Minimal (cleanser only)</option>
+                            <option value="basic">Basic (cleanser + moisturizer)</option>
+                            <option value="moderate">Moderate (cleanser + treatments + moisturizer)</option>
+                            <option value="extensive">Extensive (multiple steps and products)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget">Monthly skincare budget</label>
+                        <select id="budget" name="budget" required>
+                            <option value="">Select your budget range</option>
+                            <option value="50">Under $50</option>
+                            <option value="100">$50 - $100</option>
+                            <option value="150">$100 - $150</option>
+                            <option value="200">$150 - $200</option>
+                            <option value="250">$200+</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large">
+                        <i class="fas fa-search"></i>
+                        Analyze My Skin
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="analysis-results" id="results" style="display: none;">
+    <div class="container">
+        <h2>Your Personalized Skin Analysis</h2>
+        <div id="resultsContent"></div>
+    </div>
+</section>
+
+<div class="loading-overlay" id="loadingOverlay" style="display: none;">
+    <div class="loading-content">
+        <div class="spinner"></div>
+        <p>Analyzing your skin profile...</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('skinAnalysisForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Show loading overlay
+    document.getElementById('loadingOverlay').style.display = 'flex';
+    
+    // Collect form data
+    const formData = new FormData(this);
+    const data = {};
+    
+    // Handle regular form fields
+    for (let [key, value] of formData.entries()) {
+        if (key === 'concerns') {
+            if (!data.concerns) data.concerns = [];
+            data.concerns.push(value);
+        } else {
+            data[key] = value;
+        }
+    }
+    
+    try {
+        const response = await fetch('/api/analyze-skin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        // Hide loading overlay
+        document.getElementById('loadingOverlay').style.display = 'none';
+        
+        // Display results
+        displayResults(result);
+        
+        // Scroll to results
+        document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('loadingOverlay').style.display = 'none';
+        alert('An error occurred while analyzing your skin. Please try again.');
+    }
+});
+
+function displayResults(result) {
+    const resultsSection = document.getElementById('results');
+    const resultsContent = document.getElementById('resultsContent');
+    
+    const html = `
+        <div class="results-grid">
+            <div class="result-card">
+                <h3><i class="fas fa-user-circle"></i> Your Skin Type</h3>
+                <p class="skin-type">${result.skin_type.charAt(0).toUpperCase() + result.skin_type.slice(1)}</p>
+                <div class="characteristics">
+                    <h4>Characteristics:</h4>
+                    <ul>
+                        ${result.characteristics.map(char => `<li>${char}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="result-card">
+                <h3><i class="fas fa-exclamation-triangle"></i> Key Concerns</h3>
+                <ul>
+                    ${result.concerns.map(concern => `<li>${concern}</li>`).join('')}
+                </ul>
+            </div>
+            
+            <div class="result-card">
+                <h3><i class="fas fa-shopping-cart"></i> Recommended Products</h3>
+                <div class="product-recommendations">
+                    ${result.recommendations.map(product => `
+                        <div class="product-item">
+                            <h4>${product.name}</h4>
+                            <p class="price">$${product.price}</p>
+                            <div class="ingredients">
+                                <small>Key ingredients: ${product.ingredients.join(', ')}</small>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <div class="result-card routine-card">
+                <h3><i class="fas fa-clock"></i> Your Personalized Routine</h3>
+                <div class="routine-section">
+                    <h4>Morning Routine</h4>
+                    <ol>
+                        ${result.routine.morning.map(step => `<li>${step}</li>`).join('')}
+                    </ol>
+                </div>
+                <div class="routine-section">
+                    <h4>Evening Routine</h4>
+                    <ol>
+                        ${result.routine.evening.map(step => `<li>${step}</li>`).join('')}
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results-actions">
+            <button onclick="window.print()" class="btn btn-secondary">
+                <i class="fas fa-print"></i> Print Results
+            </button>
+            <a href="/products" class="btn btn-primary">
+                <i class="fas fa-shopping-cart"></i> Shop Recommended Products
+            </a>
+        </div>
+    `;
+    
+    resultsContent.innerHTML = html;
+    resultsSection.style.display = 'block';
+}
+</script>
+{% endblock %}

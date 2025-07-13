@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1 class="hero-title">Advanced AI-Powered Dermatological Care</h1>
+            <p class="hero-subtitle">Personalized skincare solutions backed by dermatological science and cutting-edge AI technology</p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('analysis') }}" class="btn btn-primary">Start Skin Analysis</a>
+                <a href="{{ url_for('products') }}" class="btn btn-secondary">View Products</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="hero-visual">
+                <i class="fas fa-user-md"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2 class="section-title">Why Choose DermaAI?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-microscope"></i>
+                </div>
+                <h3>Dermatological Expertise</h3>
+                <p>Formulated by certified dermatologists with years of clinical experience in skin health and treatment.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>AI-Powered Analysis</h3>
+                <p>Advanced algorithms analyze your skin type, concerns, and needs to provide personalized recommendations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3>Minimalist Approach</h3>
+                <p>Clean, effective formulations with clinically proven ingredients. No unnecessary additives or fragrances.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Evidence-Based</h3>
+                <p>All recommendations are based on peer-reviewed research and clinical studies in dermatology.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="process">
+    <div class="container">
+        <h2 class="section-title">How It Works</h2>
+        <div class="process-steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Skin Analysis</h3>
+                    <p>Complete our comprehensive skin assessment questionnaire to understand your unique skin profile.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>AI Recommendation</h3>
+                    <p>Our AI analyzes your responses and matches you with the most suitable products and routines.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Personalized Routine</h3>
+                    <p>Receive a customized skincare routine designed specifically for your skin type and concerns.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Track Progress</h3>
+                    <p>Monitor your skin's improvement and adjust your routine as needed with ongoing support.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about" id="about">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>About Muhammad Talha Fayyaz</h2>
+                <p>Muhammad Talha Fayyaz combines deep dermatological knowledge with cutting-edge AI technology to revolutionize skincare. With a passion for evidence-based treatments and minimalist formulations, he has created DermaAI to make professional-grade skincare accessible to everyone.</p>
+                <p>Our mission is to provide personalized, effective skincare solutions that are backed by science and tailored to your unique skin needs. Every product is carefully formulated with clinically proven ingredients and rigorously tested for safety and efficacy.</p>
+                <div class="credentials">
+                    <div class="credential">
+                        <i class="fas fa-certificate"></i>
+                        <span>Dermatological Expertise</span>
+                    </div>
+                    <div class="credential">
+                        <i class="fas fa-flask"></i>
+                        <span>Clinical Research</span>
+                    </div>
+                    <div class="credential">
+                        <i class="fas fa-award"></i>
+                        <span>Quality Assurance</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-image">
+                <div class="about-visual">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Transform Your Skin?</h2>
+            <p>Start your personalized skincare journey with DermaAI today</p>
+            <a href="{{ url_for('analysis') }}" class="btn btn-primary btn-large">Get Started Now</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
